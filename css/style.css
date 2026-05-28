@@ -1,0 +1,698 @@
+/* ==========================================================================
+   0. CREDITS & ROOT VARIABLES (Shared Across All Pages)
+   ========================================================================== */
+
+/* The layout of this website, as well as certain design elements, are all inspired by https://androbohij.cc/ */
+
+:root {
+    --bg-light: #243f48;
+    --bg-dark: #122024;
+
+    --main-red: #d42e12;
+    --main-green: #009645;
+    --main-yellow: #fa9e0d;
+    --main-blue: #005ec4;
+    --main-purple: #9900aa;
+    --main-brown: #9d5b25;
+
+    --bus-green: #55dd33;
+}
+
+/* ==========================================================================
+   1. GLOBAL & BASE STYLES (Shared Across All Pages)
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Istok Web, sans-serif;
+} 
+
+body {
+    background-color: var(--bg-light);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    background-blend-mode: hard-light;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+}
+
+a[target="_blank"]::after {
+    content: " ↗";
+    font-size: 0.8rem;
+}
+
+iframe {
+    max-width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+/* ==========================================================================
+   2. KEYFRAME ANIMATIONS (Shared Across All Pages)
+   ========================================================================== */
+
+/* This makes the background: Credit for the idea goes to: https://codepen.io/Hyperplexed/pen/zYXZoZg?ref=Hyperplexed */
+@keyframes pan {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 0%;
+    }
+}
+
+/* haha 67 - Hover interactions */
+@keyframes moveUp {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-15px); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(15px); }
+}
+
+@keyframes moveDown {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(15px); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(-15px); }
+}
+
+/* LCD Marquee tracking */
+@keyframes scroll-lcd {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); 
+    }
+}
+
+/* ==========================================================================
+   3. CORE MAIN FRAMEWORK & CANVAS BACKGROUNDS (Shared Across All Pages)
+   ========================================================================== */
+
+.bg {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-pattern {
+    background-image: url(../assets/background/bg-graphic.svg); /* Credits for bus icon: https://www.lta.gov.sg/content/dam/ltagov/img/map/bus/icon-bus-public.svg and train icon: https://upload.wikimedia.org/wikipedia/jv/4/42/Singapore_MRT_logo.svg */
+    background-size: 10%;
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    translate: -50% 0%;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    min-width: 1200px;
+    opacity: 0.10;
+    animation: pan 180s linear infinite;
+    will-change: background-position;
+}
+
+.bg-gradient-overlay {
+    background: radial-gradient(circle, transparent 75%, var(--bg-dark));
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.main {
+    width: 960px;
+    padding: 15px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    background-color: #eee;
+}
+
+.skeuo.content {
+    border-radius: 0;
+}
+
+.content article {
+    margin: 0;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.content article .inset:not(.title) {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* ==========================================================================
+   4. STRUCTURAL WRAPPERS: HEADER, NAVIGATION & FOOTER (Shared Across All Pages)
+   ========================================================================== */
+
+header {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+header.skeuo {
+    border-radius: 15px 15px 0 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0;
+    padding: 20px 15px 20px;
+    text-align: center;
+}
+
+nav.skeuo {
+    border-radius: 0;
+}
+
+nav div {
+    width: 200px;
+    color: white;
+    text-shadow: 0 0 3px black;
+    text-decoration: none;
+    justify-content: center;
+    transition: transform 0.1s ease;
+}
+
+footer.skeuo {
+    border-radius: 0 0 15px 15px;
+    margin-top: 0;
+}
+
+footer.inset {
+    margin: 0 auto 0;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: inset 0 0 6px #000a, inset 4px 5px 10px #0004;
+}
+
+.inset.footer-content {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px 20px; 
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* ==========================================================================
+   5. DECORATIVE SKEUOMORPHIC & REUSABLE LAYOUT SELECTION PLUGINS
+   ========================================================================== */
+
+.glass {
+    background-color: color-mix(in srgb, var(--bg-light) 20%, transparent 80%);
+    backdrop-filter: blur(12px);
+    background-blend-mode: soft-light;
+}
+
+.glass::before {
+    content: "";
+    z-index: -1;
+    inset: 0;
+    position: absolute;
+    border-radius: inherit;
+    background: linear-gradient(140deg, hsla(0, 0%, 100%, 0.3) 20%, hsla(0, 0%, 0%, 0.1) 100%);
+    box-shadow: -4px -6px 10px #ffffff33;
+}
+
+.skeuo {
+    border-radius: 15px;
+    box-shadow: inset 2px 3px 6px #fff, inset -2px -3px 6px #0006, 4px 6px 5px #0007, 0 0 5px #000a; 
+}
+
+.inset {
+    padding: 2.5vh;
+    margin: 0 auto 0;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: inset 0 0 6px #000a, inset 4px 5px 10px #0004;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.inset.title {
+    text-align: center;
+    margin: 0 auto 20px;
+    padding: 5px;
+    width: 100%;
+}
+
+.title.quote {
+    margin: 0;
+}
+
+.box {
+    padding: 20px;
+    max-width: 100%;
+}
+
+.span-two {
+    grid-column: span 2;
+}
+
+.span-three {
+    grid-column: span 3;
+}
+
+.button {
+    margin-bottom: 0px;
+}
+
+.button:active, .pressed {
+    filter: brightness(85%);
+    box-shadow: inset 0 0 6px #000a, inset 4px 5px 10px #0004;
+}
+
+.text-container {
+    min-height: 0;
+    height: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 19px; 
+    text-align: left;
+}
+
+.scrollable {
+    overflow-y: auto;
+    height: 0;
+}
+
+.justified {
+    text-align: justify;
+}
+
+/* ==========================================================================
+   6. GLOBAL PALETTE COLOR UTILITIES
+   ========================================================================== */
+
+.red { background-color: var(--main-red); }
+.green { background-color: var(--main-green); }
+.bus-green { background-color: var(--bus-green); }
+.blue { background-color: var(--main-blue); }
+.yellow { background-color: var(--main-yellow); }
+.purple { background-color: var(--main-purple); }
+.brown { background-color: var(--main-brown); }
+.black { background-color: black; }
+
+
+/* ==========================================================================
+   7. PAGE TARGET: index.html 
+   ========================================================================== */
+
+.numbers-container {
+    display: inline-block;
+    cursor: default;
+}
+
+.numbers {
+    display: inline-block;
+    cursor: default;
+    font-size: 5rem;
+}
+
+.numbers-container:hover .six {
+    animation: moveUp 0.6s ease-in-out infinite;
+}
+
+.numbers-container:hover .seven {
+    animation: moveDown 0.6s ease-in-out infinite;
+}
+
+.statbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    gap: 15px;
+    width: 100%;
+}
+
+.stat-desc {
+    font-size: 1.2rem;
+    max-width: 90%;
+    color: #333;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.2;
+    overflow: hidden;
+    cursor: default;
+}
+
+
+/* ==========================================================================
+   8. PAGE TARGET: success-story.html
+   ========================================================================== */
+
+.image {
+    width: 100%;
+    display: block;
+    border-radius: inherit;
+}
+
+.image.smaller {
+    width: 70%;
+}
+
+.image-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    border-radius: inherit;
+}
+
+.no-bullet {
+    list-style-type: none;
+}
+
+.success-story {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: span 3;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.right-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.fun-facts .image {
+    width: 80%;
+    padding: 10px;
+}
+
+
+/* ==========================================================================
+   9. PAGE TARGET: action.html
+   ========================================================================== */
+
+/* Goals Tracking Layout System */
+.goals-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.goal-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.goal-row:last-child {
+    margin-bottom: 0;
+}
+
+.goal-text {
+    flex: 1;
+    padding-right: 20px;
+    font-size: 1.2rem;
+}
+
+.bar-track {
+    width: 250px;
+    height: 60px;
+    border-radius: inherit;
+    position: relative;
+    padding: 6px;
+}
+
+.bar-track::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #5d5d5d;
+    border-radius: 30px;
+    box-shadow: inset 0 0 6px #000a, inset 4px 5px 10px #0004;
+    z-index: 1;
+    filter: brightness(0.8);
+}
+
+.bar-track .bar {
+    height: 100%;
+    border-radius: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.bar.green { width: 95%; }
+.bar.yellow { width: 60%; }
+.bar.red { width: 30%; }
+
+/* Sustainability Comparison Tables */
+.table-container {
+    width: 100%;
+    padding: 0;           
+    background: #ffffff;
+    border-radius: 15px;  
+    overflow: hidden;     
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    table-layout: fixed;  
+    margin: 10px;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) { text-align: left; }   
+.table th:nth-child(2), .table td:nth-child(2) { text-align: center; } 
+.table th:nth-child(3), .table td:nth-child(3) { text-align: center; } 
+.table th:nth-child(4), .table td:nth-child(4) { text-align: center; } 
+
+.table th {
+    background-color: var(--main-blue);
+    color: white;
+    font-weight: bold;
+    padding: 16px 12px;       
+    font-size: 1.15rem;
+    line-height: 1.3;         
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 2px 3px 6px #fff, inset -2px -3px 6px #0006; 
+}
+
+.table th:first-child { border-top-left-radius: 15px; }
+.table th:last-child { border-top-right-radius: 15px; }
+
+.table td {
+    padding: 22px 14px;       
+    line-height: 1.4;         
+    color: #111111;
+    font-size: 1.05rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2ecf3;
+    border-right: 1px solid #e2ecf3;
+}
+
+.table td:last-child { border-right: none; }
+.table tr:last-child td { border-bottom: none; }
+.table tbody tr:nth-child(even) td { background: rgba(228, 240, 250, 0.45); }
+
+/* Checklist Component Box */
+.checklist-box {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 15px;
+    width: 100%;
+}
+
+.check-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.check-item .stat-desc {
+    text-align: left !important;
+    margin: 0;
+    font-size: 1.1rem;
+    flex-grow: 1;
+    pointer-events: none; 
+    user-select: none;
+}
+
+.check-custom {
+    padding: 0 !important; 
+    height: 28px;
+    width: 28px;
+    background-color: #eee;
+    margin-right: 15px;
+    flex-shrink: 0;
+    border-radius: 6px !important;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
+}
+
+.check-custom:active {
+    transform: scale(0.95);
+    filter: brightness(85%);
+    box-shadow: inset 0 0 6px #000a, inset 4px 5px 10px #0004 !important;
+}
+
+.check-input:checked ~ .check-custom {
+    background-color: #ffffff;
+    box-shadow: inset 0 0 6px #000a, inset 2px 2px 5px rgba(0,0,0,0.3) !important;
+}
+
+.check-custom::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 10px;
+    top: 4px;
+    width: 5px;
+    height: 11px;
+    border: solid var(--main-green);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.check-input:checked ~ .check-custom::after {
+    display: block;
+}
+
+
+/* ==========================================================================
+   10. PAGE TARGET: about.html
+   ========================================================================== */
+
+/* Transit Terminal LCD Display Screen */
+.inset.lcd-frame {
+    background-color: #050505; 
+    padding: 5px 15px;        
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-container {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-content {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+    animation: scroll-lcd 15s linear infinite; 
+}
+
+.marquee-content img {
+    width: 2400px; 
+    height: auto;
+    display: block;
+    flex-shrink: 0; 
+}
+
+/* Bus Bell Contact Overlay Modules */
+.bus-bell-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.contact-card {
+    padding: 50px 0px;
+}
+
+.btn-contact {
+    height: 6rem;
+    color: white;
+    cursor: pointer;
+    margin: 0px 20px;
+    user-select: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.contact-links {
+    display: none;
+    margin: 15px;
+}
+
+.contact-links h4 {
+    margin-top: 0;
+    color: #a64b2a;
+}
+
+.contact-links ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-links li {
+    margin-bottom: 8px;
+}
+
+.contact-links a {
+    color: #a64b2a;
+    text-decoration: none;
+}
+
+.contact-links a:hover {
+    text-decoration: underline;
+}
+
+.toggle-trigger:checked ~ .contact-links {
+    display: block;
+}

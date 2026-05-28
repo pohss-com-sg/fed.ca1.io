@@ -1,0 +1,218 @@
+================================================================================
+CA1 - STATIC WEBSITE: GRADING ROADMAP AND FEATURE CHECKLIST
+================================================================================
+Name: Sing Siang
+Class: DAAA/FT/1A/04
+Project: public transport is cool! (PTIC)
+--------------------------------------------------------------------------------
+FILE STRUCTURE
+--------------------------------------------------------------------------------
+
+    index.html          - Home page
+    action.html         - Personal action plan page
+    about.html          - About me page
+    success-story.html  - Success story page (linked from home)
+
+    css/
+        style.css       - Single external stylesheet used by all pages
+
+    assets/
+        background/     - Shared background SVG graphic (used as favicon too)
+        index/          - Images for the Home page
+        about-me/       - Images for the About me page
+        success-story/  - Images for the Success story page
+
+--------------------------------------------------------------------------------
+HTML FEATURES (Relevant to HTML Coding Criteria)
+--------------------------------------------------------------------------------
+ 
+SEMANTIC STRUCTURE
+  - All pages use correct HTML5 sectioning elements: <header>, <nav>, <main>
+    equivalent (div.content), <article>, and <footer>.
+  - Each page has a consistent, logical document outline with <h1> in the
+    header and <h2> used for card titles.
+ 
+NAVIGATION
+  - Navigation bar appears on all four pages, linking between index.html,
+    action.html, and about.html using relative paths.
+  - The currently active page's nav button has a `.pressed` class applied
+    to visually indicate the current location, without using JavaScript.
+  - The "home" link on index.html and "action plan" on action.html and
+    "about me" on about.html are intentionally not wrapped in <a> tags
+    (commented in the HTML) to prevent a page linking to itself.
+ 
+LINKS
+  - External links (e.g. bus route references, Citymapper, GitHub) use
+    target="_blank" for opening in a new tab.
+  - CSS auto-appends a "↗" arrow after all target="_blank" links via the
+    a[target="_blank"]::after pseudo-element.
+  - Internal link: the "success story" button on index.html links to
+    success-story.html using a relative path.
+ 
+IMAGES
+  - All images use meaningful alt text describing the image content.
+  - Images are organised into subfolders under assets/.
+  - All image sources are credited in HTML comments at the bottom of each file.
+  - No image exceeds 800KB.
+ 
+SPECIAL ELEMENTS
+  - Embedded YouTube iframe on index.html for the introductory video.
+  - HTML table on action.html for the transport cost/environment comparison.
+  - Ordered and unordered lists used on index.html (fun facts), action.html
+    (tips, challenges), and about.html (contact links).
+  - <u> tags used for emphasis on key statistics throughout index.html.
+  - Copyright symbol (©) used in all footers as a special character.
+  - Custom favicon using the background SVG graphic.
+  - Google Fonts loaded via <link> with preconnect for performance.
+  - lang="en" attribute set on all <html> elements.
+ 
+FORMS / INTERACTIVE ELEMENTS (CSS-only, no JavaScript)
+  - action.html: Three interactive checkboxes in the "Get Involved!" card.
+  - about.html: A "START" button (styled like a bus bell) toggles the
+    contact information panel using a CSS-only checkbox toggle trick
+    (toggle-trigger:checked ~ .contact-links).
+ 
+COMMENTS
+  - All HTML files contain comments explaining major sections, layout rows,
+    design inspirations, and image/content credits.
+ 
+VALIDATION
+  - All pages have been validated using https://validator.w3.org with no
+    fatal errors.
+ 
+--------------------------------------------------------------------------------
+CSS FEATURES (Relevant to CSS Coding Criteria)
+--------------------------------------------------------------------------------
+ 
+SELECTORS USED
+  - Element selectors:          body, header, nav, footer, a, iframe, table, ul, ol, li, h2, p
+  - Class selectors:            .skeuo, .glass, .inset, .box, .button, .content, etc.
+  - Contextual/descendant:      .content article, nav div, .check-item .stat-desc
+  - Attribute selector:         a[target="_blank"]::after
+  - Pseudo-classes:             :root, :hover, :active, :checked, :nth-child(even),
+                                 :first-child, :last-child
+  - Pseudo-elements:            ::before, ::after
+ 
+CSS VARIABLES
+  - Defined in :root for the full colour palette: --main-red, --main-green,
+    --main-blue, --main-yellow, --main-purple, --main-brown, --bus-green,
+    --bg-light, --bg-dark.
+  - Used consistently throughout the stylesheet via var().
+ 
+TEXT, FONT, AND COLOUR
+  - Two Google Fonts loaded: Istok Web (body text).
+  - font-family, font-size, font-weight, text-align, text-shadow, line-height,
+    text-decoration, and color properties are used throughout.
+  - color-mix() used in .glass for a semi-transparent background tint.
+ 
+BOX MODEL
+  - box-sizing: border-box set globally on *.
+  - margin, padding, border, width, height, max-width, min-width all used.
+  - Inset box-shadow used to simulate the skeuomorphic "pressed" effect on
+    buttons and card insets.
+ 
+LAYOUT
+  - CSS Grid: .content uses grid-template-columns: repeat(3, 1fr) for the
+    main card layout. .success-story uses a nested 2-column grid.
+  - Flexbox: used extensively for header, nav, footer, article internals,
+    goal rows, checklist items, the marquee, and the bus bell container.
+  - Span utilities: .span-two (grid-column: span 2) and .span-three
+    (grid-column: span 3) for full-width and two-thirds-width cards.
+  - position: fixed for the background layer; position: absolute for overlay
+    elements and pseudo-elements; position: relative for bar tracks and
+    checkmark anchoring.
+ 
+KEYFRAME ANIMATIONS
+  - @keyframes pan: Slowly scrolls the background SVG tile horizontally
+    over 180 seconds (infinite loop). Applied to .bg-pattern.
+  - @keyframes moveUp / moveDown: Hover animation on the "67%" stat digits,
+    making the 6 and 7 bounce in opposite directions when hovered.
+  - @keyframes scroll-lcd: Translates the duplicated LCD image strip to
+    create a seamless infinite scrolling marquee on about.html.
+ 
+SKEUOMORPHIC DESIGN SYSTEM
+  - .skeuo: Applies a raised 3D appearance via layered box-shadow.
+  - .glass: Frosted-glass effect using backdrop-filter: blur and
+    background with color-mix transparency. Uses a ::before pseudo-element
+    for the internal light sheen.
+  - .inset: Recessed/sunken panel look using inset box-shadow.
+  - .button:active / .pressed: Depressed button state using inset shadow
+    and brightness filter.
+ 
+COLOUR UTILITIES
+  - Utility classes (.red, .blue, .bus-green, etc.) apply MRT/bus line
+    colours as background-color, enabling consistent theming across cards.
+ 
+LIST STYLES
+  - Default list styling overridden for .contact-links ul (list-style-type: none).
+  - .no-bullet class removes bullets from specific <li> items in fun facts.
+  - list-style preserved as decimal for numbered tips and challenges.
+ 
+EXTERNAL STYLESHEET
+  - All styling is in css/style.css. No inline styles are used in any HTML.
+ 
+VALIDATION
+  - CSS validated using https://jigsaw.w3.org/css-validator/ with no fatal
+    errors.
+ 
+COMMENTS
+  - style.css is divided into ten numbered sections with block comments,
+    each explaining the purpose of its rules.
+ 
+--------------------------------------------------------------------------------
+DESIGN (Relevant to UX / C.R.A.P. Principles)
+--------------------------------------------------------------------------------
+ 
+CONTRAST
+  - White text on coloured card backgrounds (red, blue, green, purple).
+  - Dark text (#111, #333) on white inset panels.
+  - Navigation buttons use text-shadow for legibility against varied backgrounds.
+ 
+REPETITION
+  - Consistent header, nav, and footer layout across all four pages.
+  - The same card/box system (.box.skeuo + colour class) is reused for
+    every content block on every page.
+  - Typography hierarchy (h1 in header, h2 in cards) is uniform site-wide.
+ 
+ALIGNMENT
+  - Three-column CSS Grid creates strong vertical alignment across the
+    main content area on all pages.
+  - Inset panels consistently centre their content using flexbox.
+ 
+PROXIMITY
+  - Related statistics are grouped within a single card.
+  - The goal bars are visually paired with their goal text in each row.
+  - The contact toggle keeps the button and its revealed links spatially close.
+ 
+NAVIGATION / USABILITY
+  - Active page is indicated by the "pressed" button state in the nav.
+  - External links open in a new tab and are visually marked with ↗.
+  - The scrollable fun-facts and tips cards allow content to grow without
+    breaking the grid layout.
+ 
+--------------------------------------------------------------------------------
+PAGES AT A GLANCE
+--------------------------------------------------------------------------------
+ 
+index.html          Intro video, ridership/cost/environment statistics,
+                    scrollable fun facts card, SG Green Plan targets,
+                    and a link to the TEL success story.
+ 
+action.html         Three personal goals with progress bar indicators,
+                    a comparison table (public transport vs car vs PHV),
+                    practical tips, an interactive "get involved" checklist,
+                    and a challenges/solutions section.
+ 
+about.html          Animated LCD screen marquee, EZ-Link card styled
+                    about graphic, inspirational quote, personal origin
+                    story with photos, vision statement, and a CSS-only
+                    bus bell contact reveal interaction.
+ 
+success-story.html  Thomson-East Coast Line overview with a full line map
+                    SVG, descriptive text on TEL Stage 4, and three
+                    commuter impact statistics.
+ 
+================================================================================
+END OF FEATURES DOCUMENT
+================================================================================
+ 
